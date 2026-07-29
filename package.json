@@ -1,0 +1,16 @@
+{
+  "name": "sprint-hive",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sprint Hive — Production-grade MERN SaaS Project Management Platform",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix client",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "concurrently -n BACKEND,CLIENT -c cyan,magenta \"npm run dev:backend\" \"npm run dev:client\"",
+    "start": "npm run start --prefix backend"
+  },
+  "dependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
