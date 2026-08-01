@@ -24,7 +24,6 @@ export function refreshSession() {
     .post('/api/auth/refresh', {}, { withCredentials: true })
     .then((res) => res.data)
     .finally(() => {
-      // Allow a future expiry event to start a new refresh
       refreshPromise = null;
     });
 
