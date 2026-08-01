@@ -174,15 +174,23 @@ app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
 
-  if (process.env.NODE_ENV === 'development') {
-    console.error('🔥 Error:', err);
+  // Only log unexpected server errors (status >= 500). Expected auth failures
+  // such as missing/invalid/expired refresh tokens (401) are considered normal
+  // control flow and should not produce noisy error logs or stack traces.
+  if (statusCode >= 500) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('🔥 Error:', err);
+    } else {
+      // In production, log minimal server error info to avoid leaking sensitive details
+      console.error(`🔥 Server error: ${message}`);
+    }
   }
 
   res.status(statusCode).json({
     success: false,
     message,
     ...(err.errorCode && { errorCode: err.errorCode }),
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(process.env.NODE_ENV === 'development' && statusCode >= 500 && { stack: err.stack }),
   });
 });
 
