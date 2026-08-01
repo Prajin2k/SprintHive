@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
+import { Send, ArrowLeft, Mail } from 'lucide-react';
 
 import AuthLayout from '../../components/auth/AuthLayout';
 import authService from '../../services/authService';
@@ -40,19 +41,21 @@ export default function ForgotPasswordPage() {
     return (
       <AuthLayout>
         <div className="text-center animate-fade-in">
-          <div className="text-6xl mb-6">📬</div>
+          <div className="w-20 h-20 rounded-full bg-brand-500/15 border border-brand-500/25 flex items-center justify-center mx-auto mb-6">
+            <Mail size={36} className="text-brand-400" />
+          </div>
           <h1 className="text-2xl font-bold text-white mb-3">Check your email</h1>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">
+          <p className="text-surface-300 text-sm leading-relaxed mb-6">
             If an account exists for{' '}
-            <span className="text-white font-medium">{getValues('email')}</span>,
+            <span className="text-white font-semibold">{getValues('email')}</span>,
             we've sent a password reset link. It expires in{' '}
-            <span className="text-white">1 hour</span>.
+            <span className="text-white font-semibold">1 hour</span>.
           </p>
-          <div className="glass rounded-xl p-4 text-xs text-slate-500 mb-8">
+          <div className="rounded-2xl border border-surface-600 bg-surface-800/50 p-4 text-xs text-surface-400 mb-8">
             Don't see it? Check your spam folder.
           </div>
           <Link to="/login" className="btn-secondary">
-            ← Back to Login
+            <ArrowLeft size={15} /> Back to Login
           </Link>
         </div>
       </AuthLayout>
@@ -86,18 +89,20 @@ export default function ForgotPasswordPage() {
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Sending...
+              <span className="spinner-sm" />
+              Sending…
             </span>
           ) : (
-            'Send Reset Link'
+            <span className="flex items-center gap-2">
+              <Send size={16} /> Send Reset Link
+            </span>
           )}
         </button>
       </form>
 
-      <p className="text-center text-sm text-slate-400 mt-6">
+      <p className="text-center text-sm text-surface-300 mt-6">
         Remember it?{' '}
-        <Link to="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
+        <Link to="/login" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
           Sign in
         </Link>
       </p>

@@ -34,6 +34,7 @@ const resolveOrgMembership = async (orgId, userId) => {
     throw new AppError('Organization context is missing from this request.', 400);
   }
 
+  // Load organization for basic context (owner, isActive)
   const org = await Organization.findById(orgId).select('members owner isActive');
 
   if (!org) {
@@ -44,10 +45,31 @@ const resolveOrgMembership = async (orgId, userId) => {
     throw new AppError('This organization has been deactivated.', 403);
   }
 
-  const membership = org.members.find((m) => m.user.toString() === userId.toString());
+  // Prefer OrganizationMember collection for membership resolution if available
+  let membership = null;
+  try {
+    // Lazy-require so code remains compatible if model is not present
+    const { OrganizationMember } = require('../models/OrganizationMember.model');
+    const memberDoc = await OrganizationMember.findOne({ organization: orgId, user: userId });
+    if (memberDoc && memberDoc.status === 'active') {
+      membership = {
+        user: memberDoc.user,
+        role: memberDoc.role,
+        joinedAt: memberDoc.joinedAt,
+        _id: memberDoc._id,
+      };
+    }
+  } catch (e) {
+    // Model might not exist in older deployments — ignore and fallback
+  }
 
+  // Fallback to embedded Organization.members[] for backwards compatibility
   if (!membership) {
-    throw new AppError('You are not a member of this organization.', 403);
+    const found = org.members.find((m) => m.user.toString() === userId.toString());
+    if (!found) {
+      throw new AppError('You are not a member of this organization.', 403);
+    }
+    membership = found;
   }
 
   return { org, membership, role: membership.role };

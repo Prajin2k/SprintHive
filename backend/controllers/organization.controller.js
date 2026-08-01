@@ -48,9 +48,24 @@ exports.createOrganization = asyncHandler(async (req, res) => {
     name: name.trim(),
     description: description?.trim() || '',
     owner: userId,
-    // Creator is automatically owner in members[]
+    // Creator is automatically owner in members[] (legacy compatibility)
     members: [{ user: userId, role: 'owner', joinedAt: new Date() }],
   });
+
+  // Persist membership in OrganizationMember collection for scalable RBAC
+  try {
+    const { OrganizationMember } = require('../models/OrganizationMember.model');
+    await OrganizationMember.create({
+      organization: org._id,
+      user: userId,
+      role: 'owner',
+      status: 'active',
+      joinedAt: new Date(),
+    });
+  } catch (err) {
+    // non-fatal — fallback is org.members embedded document
+    console.error('Failed to create OrganizationMember record:', err.message);
+  }
 
   // Log activity
   await Activity.create({

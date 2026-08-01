@@ -16,7 +16,7 @@ const schema = z.object({
 });
 
 const PRESET_COLORS = [
-  '#f97316', '#ef4444', '#10b981', '#3b82f6', 
+  '#5B5FFF', '#ef4444', '#10b981', '#3b82f6', 
   '#8b5cf6', '#ec4899', '#f59e0b', '#64748b'
 ];
 
@@ -29,7 +29,7 @@ const ProjectCreateModal = ({ isOpen, onClose }) => {
     resolver: zodResolver(schema),
     defaultValues: {
       priority: 'medium',
-      coverColor: '#f97316',
+      coverColor: '#5B5FFF',
     }
   });
 

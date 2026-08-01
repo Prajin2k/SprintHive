@@ -46,15 +46,25 @@ if (!isConfigured()) {
 }
 
   const transporter = getTransporter();
+
+try {
   const info = await transporter.sendMail({
-    from: `"Sprint Hive" <${process.env.EMAIL_USER}>`,
+    from: process.env.EMAIL_FROM,
     to,
     subject,
     text,
     html,
   });
 
+  console.log("✅ Email sent successfully");
+  console.log(info);
+
   return info;
+} catch (err) {
+  console.error("❌ Email sending failed");
+  console.error(err);
+  throw err;
+}
 };
 
 // ── Public helpers ─────────────────────────────────────────────

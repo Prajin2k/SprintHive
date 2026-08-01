@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
+import { Users, Mail, AlertTriangle, UserPlus, Trash2, Shield } from 'lucide-react';
 
 import useOrg from '../../hooks/useOrg';
 import useAuth from '../../hooks/useAuth';
@@ -20,11 +21,11 @@ import { useNavigate } from 'react-router-dom';
 
 const INVITE_ROLES = ['manager', 'teamlead', 'developer', 'tester'];
 const ROLE_LABELS = {
-  owner: { label: 'Owner', color: 'text-amber-400 bg-amber-400/10' },
-  manager: { label: 'Manager', color: 'text-blue-400 bg-blue-400/10' },
-  teamlead: { label: 'Team Lead', color: 'text-purple-400 bg-purple-400/10' },
-  developer: { label: 'Developer', color: 'text-green-400 bg-green-400/10' },
-  tester: { label: 'Tester', color: 'text-pink-400 bg-pink-400/10' },
+  owner: { label: 'Owner', color: 'text-amber-400 bg-amber-400/10 border-amber-400/20' },
+  manager: { label: 'Manager', color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
+  teamlead: { label: 'Team Lead', color: 'text-brand-400 bg-brand-400/10 border-brand-400/20' },
+  developer: { label: 'Developer', color: 'text-green-400 bg-green-400/10 border-green-400/20' },
+  tester: { label: 'Tester', color: 'text-purple-400 bg-purple-400/10 border-purple-400/20' },
 };
 
 const inviteSchema = z.object({
@@ -34,9 +35,9 @@ const inviteSchema = z.object({
 
 // ── Role badge ──────────────────────────────────────────────────
 function RoleBadge({ role }) {
-  const { label, color } = ROLE_LABELS[role] || { label: role, color: 'text-slate-400 bg-slate-400/10' };
+  const { label, color } = ROLE_LABELS[role] || { label: role, color: 'text-surface-400 bg-surface-700 border-surface-600' };
   return (
-    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full capitalize ${color}`}>
+    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border capitalize ${color}`}>
       {label}
     </span>
   );
@@ -57,9 +58,9 @@ function MemberRow({ member, isOwner, currentUserId, orgId, onRemove, onRoleChan
   };
 
   return (
-    <div className="flex items-center gap-3 py-3 border-b border-surface-700 last:border-0">
+    <div className="flex items-center gap-3 py-3.5 border-b border-surface-600/60 last:border-0">
       {/* Avatar */}
-      <div className="w-9 h-9 rounded-lg bg-surface-600 border border-surface-500 flex items-center justify-center text-sm font-bold text-brand-400 flex-shrink-0 overflow-hidden">
+      <div className="w-9 h-9 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-sm font-bold text-brand-300 flex-shrink-0 overflow-hidden">
         {user?.avatar ? (
           <img src={user.avatar} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -69,11 +70,11 @@ function MemberRow({ member, isOwner, currentUserId, orgId, onRemove, onRoleChan
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white truncate">
+        <p className="text-sm font-semibold text-white truncate">
           {user?.name || 'Unknown'}
-          {isCurrentUser && <span className="ml-1 text-xs text-slate-500">(you)</span>}
+          {isCurrentUser && <span className="ml-1.5 text-xs text-surface-400 font-normal">(you)</span>}
         </p>
-        <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+        <p className="text-xs text-surface-400 truncate">{user?.email}</p>
       </div>
 
       {/* Role */}
@@ -83,7 +84,7 @@ function MemberRow({ member, isOwner, currentUserId, orgId, onRemove, onRoleChan
             value={member.role}
             onChange={handleRoleChange}
             disabled={changingRole}
-            className="text-xs bg-surface-700 border border-surface-600 rounded-lg px-2 py-1 text-slate-300 focus:outline-none focus:border-brand-500 cursor-pointer"
+            className="text-xs bg-surface-800 border border-surface-600 rounded-lg px-2.5 py-1 text-surface-200 focus:outline-none focus:border-brand-500 cursor-pointer"
           >
             {INVITE_ROLES.map((r) => (
               <option key={r} value={r}>
@@ -100,10 +101,10 @@ function MemberRow({ member, isOwner, currentUserId, orgId, onRemove, onRoleChan
       {isOwner && !isOrgOwner && !isCurrentUser && (
         <button
           onClick={() => onRemove(userId)}
-          className="text-slate-600 hover:text-red-400 transition-colors text-sm ml-1"
+          className="text-surface-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-500/10 transition-colors ml-1"
           title="Remove member"
         >
-          ✕
+          <Trash2 size={15} />
         </button>
       )}
     </div>
@@ -118,13 +119,13 @@ function TabButton({ active, onClick, label, badge }) {
     <button
       type="button"
       onClick={onClick}
-      className={`px-4 py-2 text-sm font-medium rounded-lg transition-all relative ${
-        active ? 'bg-surface-700 text-white' : 'text-slate-400 hover:text-white hover:bg-surface-700/50'
+      className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all relative ${
+        active ? 'bg-surface-700 text-white border border-surface-600' : 'text-surface-400 hover:text-white hover:bg-surface-800/50'
       }`}
     >
       {label}
       {badge > 0 && (
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-500 rounded-full text-[10px] font-bold flex items-center justify-center">
+        <span className="ml-2 px-1.5 py-0.2 rounded-full bg-brand-500 text-[10px] font-bold text-white">
           {badge}
         </span>
       )}
@@ -158,7 +159,6 @@ export default function OrgSettingsPage() {
     formState: { errors },
   } = useForm({ resolver: zodResolver(inviteSchema), defaultValues: { role: 'developer' } });
 
-  // Load members with user details whenever the active org changes
   useEffect(() => {
     if (activeOrg?._id) {
       dispatch(fetchOrgDetails(activeOrg._id));
@@ -176,7 +176,6 @@ export default function OrgSettingsPage() {
     if (inviteMember.fulfilled.match(result)) {
       toast.success(result.payload.message);
       reset();
-      // Refresh if it was a new user invite
       if (!result.payload.addedUser) {
         dispatch(fetchPendingInvites(activeOrg._id));
       } else {
@@ -224,8 +223,9 @@ export default function OrgSettingsPage() {
 
   if (!activeOrg) {
     return (
-      <div className="flex items-center justify-center h-64 text-slate-500">
-        No active organization selected.
+      <div className="flex flex-col items-center justify-center h-64 text-surface-400">
+        <Users size={32} className="mb-2 text-surface-600" />
+        <p>No active organization selected.</p>
       </div>
     );
   }
@@ -236,8 +236,8 @@ export default function OrgSettingsPage() {
     <div className="max-w-3xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white mb-1">Organization Settings</h1>
-        <p className="text-slate-400 text-sm">
+        <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Organization Settings</h1>
+        <p className="text-surface-300 text-sm">
           <span className="text-white font-medium">{activeOrg.name}</span>
           {' · '}
           <span className="capitalize">{userOrgRole}</span>
@@ -247,7 +247,7 @@ export default function OrgSettingsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-8 p-1 bg-surface-800 rounded-xl w-fit border border-surface-600">
+      <div className="flex gap-1 mb-8 p-1 bg-surface-800 rounded-2xl w-fit border border-surface-600">
         {TABS.map((tab) => (
           <TabButton
             key={tab}
@@ -262,13 +262,16 @@ export default function OrgSettingsPage() {
       {/* ── Members Tab ─────────────────────────────────────── */}
       {activeTab === 'Members' && (
         <div className="card animate-fade-in">
-          <h2 className="text-base font-semibold text-white mb-4">
-            Members ({members.length})
-          </h2>
+          <div className="flex items-center gap-2 mb-4">
+            <Users size={18} className="text-brand-400" />
+            <h2 className="text-base font-bold text-white">
+              Members ({members.length})
+            </h2>
+          </div>
 
           {isMembersLoading ? (
-            <div className="flex items-center justify-center py-8 text-slate-500">
-              <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin mr-2" />
+            <div className="flex items-center justify-center py-8 text-surface-400">
+              <div className="spinner-sm mr-2" />
               Loading members...
             </div>
           ) : (
@@ -289,8 +292,10 @@ export default function OrgSettingsPage() {
 
           {/* Invite form */}
           {canInviteMembers && (
-            <form onSubmit={handleSubmit(handleInvite)} className="mt-6 pt-6 border-t border-surface-700">
-              <h3 className="text-sm font-semibold text-white mb-4">Invite a Member</h3>
+            <form onSubmit={handleSubmit(handleInvite)} className="mt-6 pt-6 border-t border-surface-600">
+              <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                <UserPlus size={16} className="text-brand-400" /> Invite a Member
+              </h3>
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="flex-1">
                   <input
@@ -321,10 +326,10 @@ export default function OrgSettingsPage() {
                   disabled={inviting}
                   className="btn-primary flex-shrink-0"
                 >
-                  {inviting ? '...' : 'Send Invite'}
+                  {inviting ? <span className="spinner-sm" /> : 'Send Invite'}
                 </button>
               </div>
-              <p className="text-xs text-slate-600 mt-2">
+              <p className="text-xs text-surface-400 mt-2.5">
                 If the email isn't registered, they'll receive a sign-up link. Expires in 7 days.
               </p>
             </form>
@@ -335,21 +340,24 @@ export default function OrgSettingsPage() {
       {/* ── Invites Tab ─────────────────────────────────────── */}
       {activeTab === 'Invites' && (
         <div className="card animate-fade-in">
-          <h2 className="text-base font-semibold text-white mb-4">
-            Pending Invitations ({pendingInvites.length})
-          </h2>
+          <div className="flex items-center gap-2 mb-4">
+            <Mail size={18} className="text-brand-400" />
+            <h2 className="text-base font-bold text-white">
+              Pending Invitations ({pendingInvites.length})
+            </h2>
+          </div>
           {pendingInvites.length === 0 ? (
-            <p className="text-slate-500 text-sm py-4 text-center">No pending invitations.</p>
+            <p className="text-surface-400 text-sm py-6 text-center">No pending invitations.</p>
           ) : (
             <div className="space-y-3">
               {pendingInvites.map((invite) => (
                 <div
                   key={invite._id}
-                  className="flex items-center gap-3 py-3 border-b border-surface-700 last:border-0"
+                  className="flex items-center gap-3 py-3 border-b border-surface-600 last:border-0"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white truncate">{invite.email}</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-sm font-semibold text-white truncate">{invite.email}</p>
+                    <p className="text-xs text-surface-400 mt-0.5">
                       <RoleBadge role={invite.role} /> · Invited by{' '}
                       {invite.invitedBy?.name || 'Unknown'} ·{' '}
                       Expires {new Date(invite.expiresAt).toLocaleDateString()}
@@ -358,7 +366,7 @@ export default function OrgSettingsPage() {
                   {canInviteMembers && (
                     <button
                       onClick={() => handleRevoke(invite._id)}
-                      className="text-xs text-slate-500 hover:text-red-400 transition-colors"
+                      className="text-xs text-surface-400 hover:text-red-400 transition-colors px-2 py-1 rounded hover:bg-red-500/10"
                     >
                       Revoke
                     </button>
@@ -372,20 +380,23 @@ export default function OrgSettingsPage() {
 
       {/* ── Danger Zone Tab ─────────────────────────────────── */}
       {activeTab === 'Danger Zone' && (
-        <div className="card border-red-500/20 animate-fade-in">
-          <h2 className="text-base font-semibold text-red-400 mb-2">Delete Organization</h2>
-          <p className="text-slate-400 text-sm mb-4">
+        <div className="card border-red-500/30 animate-fade-in">
+          <div className="flex items-center gap-2 mb-2">
+            <AlertTriangle size={18} className="text-red-400" />
+            <h2 className="text-base font-bold text-red-400">Delete Organization</h2>
+          </div>
+          <p className="text-surface-300 text-sm mb-6 leading-relaxed">
             This will soft-delete the organization and archive all its projects. Data is preserved
             but the org will be inaccessible. This action requires owner privileges.
           </p>
 
           {!isOwner ? (
-            <p className="text-slate-500 text-sm">Only the owner can delete this organization.</p>
+            <p className="text-surface-400 text-sm">Only the owner can delete this organization.</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div>
-                <label className="label text-slate-400">
-                  Type <span className="text-white font-mono">{activeOrg.name}</span> to confirm
+                <label className="label text-surface-300">
+                  Type <span className="text-white font-mono bg-surface-800 px-1.5 py-0.5 rounded">{activeOrg.name}</span> to confirm
                 </label>
                 <input
                   type="text"
@@ -404,7 +415,7 @@ export default function OrgSettingsPage() {
               >
                 {deletingOrg ? (
                   <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span className="spinner-sm" />
                     Deleting…
                   </span>
                 ) : (

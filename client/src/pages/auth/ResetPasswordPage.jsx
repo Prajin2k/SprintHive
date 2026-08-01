@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
+import { Eye, EyeOff, ShieldCheck, KeyRound } from 'lucide-react';
 
 import AuthLayout from '../../components/auth/AuthLayout';
 import authService from '../../services/authService';
@@ -74,13 +75,15 @@ export default function ResetPasswordPage() {
     return (
       <AuthLayout>
         <div className="text-center animate-fade-in">
-          <div className="text-6xl mb-6">🔐</div>
+          <div className="w-20 h-20 rounded-full bg-brand-500/15 border border-brand-500/25 flex items-center justify-center mx-auto mb-6">
+            <ShieldCheck size={36} className="text-brand-400" />
+          </div>
           <h1 className="text-2xl font-bold text-white mb-3">Password reset!</h1>
-          <p className="text-slate-400 text-sm mb-8">
+          <p className="text-surface-300 text-sm mb-8">
             Your password has been updated. All active sessions were signed out for security.
           </p>
           <Link to="/login" className="btn-primary">
-            Sign in with new password →
+            <KeyRound size={16} /> Sign in with new password
           </Link>
         </div>
       </AuthLayout>
@@ -107,9 +110,9 @@ export default function ResetPasswordPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-200 transition-colors"
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
 
@@ -156,8 +159,8 @@ export default function ResetPasswordPage() {
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Resetting...
+              <span className="spinner-sm" />
+              Resetting…
             </span>
           ) : (
             'Set New Password'
@@ -165,8 +168,8 @@ export default function ResetPasswordPage() {
         </button>
       </form>
 
-      <p className="text-center text-sm text-slate-400 mt-6">
-        <Link to="/login" className="text-brand-400 hover:text-brand-300 transition-colors">
+      <p className="text-center text-sm text-surface-300 mt-6">
+        <Link to="/login" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
           ← Back to Login
         </Link>
       </p>

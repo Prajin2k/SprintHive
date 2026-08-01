@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { createOrganization } from '../../store/slices/orgSlice';
 import useOrg from '../../hooks/useOrg';
 import useAuth from '../../hooks/useAuth';
+import logoIcon from '../../assets/logo_icon.png';
 
 const schema = z.object({
   name: z
@@ -43,22 +44,27 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-900 bg-mesh flex items-center justify-center px-6">
+    <div className="min-h-screen bg-surface-900 bg-mesh flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-lg animate-fade-in">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="text-6xl mb-4">🐝</div>
-          <h1 className="text-3xl font-bold text-white mb-2">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <img src={logoIcon} alt="Sprint Hive" className="w-11 h-11 object-contain" />
+            <span className="font-extrabold text-2xl tracking-tight text-white">
+              Sprint<span className="bg-gradient-to-r from-brand-400 to-accent-400 bg-clip-text text-transparent">Hive</span>
+            </span>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
             Welcome, {user?.name?.split(' ')[0]}!
           </h1>
-          <p className="text-slate-400">
+          <p className="text-surface-300 text-sm">
             Create your first organization to get started. You can invite your team after.
           </p>
         </div>
 
         {/* Create org card */}
         <div className="card mb-6">
-          <h2 className="text-lg font-semibold text-white mb-6">Create an Organization</h2>
+          <h2 className="text-lg font-bold text-white mb-6">Create an Organization</h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
@@ -66,7 +72,7 @@ export default function OnboardingPage() {
               <input
                 id="org-name"
                 type="text"
-                placeholder="Organization name"
+                placeholder="Acme Corp"
                 className={`input ${errors.name ? 'input-error' : ''}`}
                 {...register('name')}
               />
@@ -75,7 +81,7 @@ export default function OnboardingPage() {
 
             <div>
               <label htmlFor="org-desc" className="label">
-                Description <span className="text-slate-600">(optional)</span>
+                Description <span className="text-surface-400 font-normal">(optional)</span>
               </label>
               <textarea
                 id="org-desc"
@@ -95,7 +101,7 @@ export default function OnboardingPage() {
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span className="spinner-sm" />
                   Creating…
                 </span>
               ) : (
@@ -106,10 +112,10 @@ export default function OnboardingPage() {
         </div>
 
         {/* Waiting for invite */}
-        <div className="card text-center border-dashed border-surface-500">
-          <div className="text-2xl mb-3">📨</div>
-          <h3 className="text-white font-medium mb-1">Waiting for an invite?</h3>
-          <p className="text-slate-500 text-sm">
+        <div className="card text-center border-dashed border-surface-600 bg-surface-800/50">
+          <div className="text-2xl mb-2">📨</div>
+          <h3 className="text-white font-medium text-sm mb-1">Waiting for an invite?</h3>
+          <p className="text-surface-400 text-xs leading-relaxed">
             Ask your team owner to invite you. Once they send the invite,
             check your email for the acceptance link.
           </p>

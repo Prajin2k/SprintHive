@@ -5,20 +5,20 @@
  */
 
 const BASE_STYLES = `
-  body { margin: 0; padding: 0; background: #0f0f13; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  body { margin: 0; padding: 0; background: #0f172a; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .wrapper { max-width: 600px; margin: 40px auto; padding: 0 20px; }
-  .card { background: #1e1e2a; border: 1px solid #3a3a52; border-radius: 16px; padding: 40px; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 40px; }
   .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
-  .logo-icon { font-size: 28px; }
-  .logo-text { font-size: 20px; font-weight: 700; color: #f1f0f8; }
-  .logo-accent { color: #f97316; }
-  h1 { color: #f1f0f8; font-size: 24px; font-weight: 700; margin: 0 0 12px; }
+  .logo-icon { width: 28px; height: 28px; object-fit: contain; }
+  .logo-text { font-size: 20px; font-weight: 700; color: #ffffff; }
+  .logo-accent { color: #5B5FFF; }
+  h1 { color: #ffffff; font-size: 24px; font-weight: 700; margin: 0 0 12px; }
   p { color: #94a3b8; font-size: 15px; line-height: 1.7; margin: 0 0 20px; }
-  .btn { display: inline-block; background: #f97316; color: #fff !important; text-decoration: none; padding: 14px 32px; border-radius: 10px; font-weight: 600; font-size: 15px; margin: 8px 0 24px; }
-  .divider { border: none; border-top: 1px solid #3a3a52; margin: 28px 0; }
+  .btn { display: inline-block; background: #5B5FFF; color: #fff !important; text-decoration: none; padding: 14px 32px; border-radius: 10px; font-weight: 600; font-size: 15px; margin: 8px 0 24px; }
+  .divider { border: none; border-top: 1px solid #334155; margin: 28px 0; }
   .small { font-size: 13px; color: #64748b; }
-  .url-box { background: #16161d; border: 1px solid #3a3a52; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #94a3b8; word-break: break-all; margin: 12px 0; }
-  .footer { text-align: center; margin-top: 24px; color: #3a3a52; font-size: 12px; }
+  .url-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #94a3b8; word-break: break-all; margin: 12px 0; }
+  .footer { text-align: center; margin-top: 24px; color: #64748b; font-size: 12px; }
 `;
 
 const wrapHtml = (content) => `
@@ -32,8 +32,11 @@ const wrapHtml = (content) => `
 <body>
   <div class="wrapper">
     <div class="card">
+      <div style="width:100%; margin-bottom:16px;">
+        <img src="${process.env.CLIENT_URL}/src/assets/email_banner.png" alt="Sprint Hive" style="width:100%; max-width:100%; height:auto; object-fit:contain; border-radius:8px; display:block; margin: 0 auto;" />
+      </div>
       <div class="logo">
-        <span class="logo-icon">🐝</span>
+        <img src="${process.env.CLIENT_URL}/src/assets/logo_icon.png" alt="Logo" class="logo-icon" />
         <span class="logo-text">Sprint<span class="logo-accent">Hive</span></span>
       </div>
       ${content}
@@ -47,7 +50,7 @@ const wrapHtml = (content) => `
 
 // ── Template 1: Email Verification ────────────────────────────
 const verificationEmail = (name, verificationUrl) => ({
-  subject: '🐝 Verify your Sprint Hive account',
+  subject: 'Sprint Hive — Verify your account',
   html: wrapHtml(`
     <h1>Welcome to Sprint Hive, ${name.split(' ')[0]}! 👋</h1>
     <p>You're almost ready to start shipping faster. Please verify your email address to activate your account.</p>
@@ -77,14 +80,14 @@ const passwordResetEmail = (name, resetUrl) => ({
 
 // ── Template 3: Welcome (post-verification) ────────────────────
 const welcomeEmail = (name) => ({
-  subject: '🐝 You\'re in — Welcome to Sprint Hive!',
+  subject: 'Sprint Hive — Welcome to your workspace!',
   html: wrapHtml(`
     <h1>Your account is ready! 🎉</h1>
     <p>Hi ${name.split(' ')[0]}, your email has been verified and your Sprint Hive account is now active.</p>
     <p>Get started by creating your first workspace and inviting your team.</p>
     <a href="${process.env.CLIENT_URL}/login" class="btn">Go to Sprint Hive →</a>
     <hr class="divider" />
-    <p class="small">Need help? Check out our <a href="${process.env.CLIENT_URL}/docs" style="color:#f97316">documentation</a>.</p>
+    <p class="small">Need help? Check out our <a href="${process.env.CLIENT_URL}/docs" style="color:#5B5FFF">documentation</a>.</p>
   `),
   text: `Hi ${name},\n\nYour email is verified! Log in at: ${process.env.CLIENT_URL}/login`,
 });
@@ -96,17 +99,17 @@ const passwordChangedEmail = (name) => ({
     <h1>Password changed successfully</h1>
     <p>Hi ${name.split(' ')[0]}, your Sprint Hive password was just changed. All active sessions have been signed out for security.</p>
     <p>If you made this change, you can safely ignore this email.</p>
-    <p>If you didn't change your password, please <a href="${process.env.CLIENT_URL}/forgot-password" style="color:#f97316">reset it immediately</a>.</p>
+    <p>If you didn't change your password, please <a href="${process.env.CLIENT_URL}/forgot-password" style="color:#5B5FFF">reset it immediately</a>.</p>
   `),
   text: `Hi ${name},\n\nYour password was changed and all sessions were signed out. If this wasn't you, reset your password: ${process.env.CLIENT_URL}/forgot-password`,
 });
 
 // ── Template 5: Organization Invite ─────────────────────────────
 const orgInviteEmail = (inviterName, orgName, role, acceptUrl) => ({
-  subject: `🐝 You're invited to join ${orgName} on Sprint Hive`,
+  subject: `Sprint Hive — You're invited to join ${orgName}`,
   html: wrapHtml(`
     <h1>You've been invited!</h1>
-    <p><strong>${inviterName}</strong> invited you to join <strong>${orgName}</strong> on Sprint Hive as <span style="color:#f97316;font-weight:600">${role}</span>.</p>
+    <p><strong>${inviterName}</strong> invited you to join <strong>${orgName}</strong> on Sprint Hive as <span style="color:#5B5FFF;font-weight:600">${role}</span>.</p>
     <a href="${acceptUrl}" class="btn">Accept Invitation →</a>
     <hr class="divider" />
     <p class="small">⏱️ This invite expires in <strong>7 days</strong>.</p>

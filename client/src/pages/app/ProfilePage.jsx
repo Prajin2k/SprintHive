@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import logoIcon from '../../assets/logo_icon.png';
 
 import useAuth from '../../hooks/useAuth';
 import {
@@ -48,10 +49,10 @@ function TabButton({ active, onClick, children }) {
     <button
       type="button"
       onClick={onClick}
-      className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 ${
+      className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-150 ${
         active
-          ? 'bg-surface-700 text-white'
-          : 'text-slate-400 hover:text-white hover:bg-surface-700/50'
+          ? 'bg-surface-700 text-white border border-surface-600'
+          : 'text-surface-400 hover:text-white hover:bg-surface-800'
       }`}
     >
       {children}
@@ -103,25 +104,25 @@ function AvatarSection({ user, onUpload }) {
     <div className="flex items-center gap-6 mb-8 pb-8 border-b border-surface-600">
       {/* Avatar */}
       <div className="relative flex-shrink-0">
-        <div className="w-20 h-20 rounded-2xl overflow-hidden bg-surface-600 border-2 border-surface-500">
+        <div className="w-20 h-20 rounded-2xl overflow-hidden bg-brand-500/15 border-2 border-brand-500/30 flex items-center justify-center">
           {avatarSrc ? (
             <img src={avatarSrc} alt="Avatar" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-brand-400">
+            <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-brand-300">
               {user?.initials || '?'}
             </div>
           )}
         </div>
         {uploading && (
           <div className="absolute inset-0 rounded-2xl bg-black/60 flex items-center justify-center">
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <div className="spinner-sm" />
           </div>
         )}
       </div>
 
       <div>
-        <h3 className="text-white font-semibold mb-1">{user?.name}</h3>
-        <p className="text-slate-400 text-xs mb-3">{user?.email}</p>
+        <h3 className="text-white font-bold text-lg mb-0.5">{user?.name}</h3>
+        <p className="text-surface-400 text-xs mb-3">{user?.email}</p>
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
@@ -138,7 +139,7 @@ function AvatarSection({ user, onUpload }) {
           onChange={handleFile}
           id="avatar-upload"
         />
-        <p className="text-xs text-slate-600 mt-2">JPG, PNG, WebP or GIF · Max 5 MB</p>
+        <p className="text-xs text-surface-400 mt-2">JPG, PNG, WebP or GIF · Max 5 MB</p>
       </div>
     </div>
   );
@@ -233,7 +234,7 @@ function ProfileTab({ user }) {
           >
             {isLoading ? (
               <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span className="spinner-sm" />
                 Saving…
               </span>
             ) : (
@@ -283,7 +284,7 @@ function SecurityTab() {
 
   return (
     <div className="max-w-md">
-      <div className="mb-6 p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 text-xs text-amber-300/80">
+      <div className="mb-6 p-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 text-xs text-amber-300/90 leading-relaxed">
         ⚠️ Changing your password will sign you out of <strong>all devices</strong>. You'll need to log in again.
       </div>
 
@@ -301,7 +302,7 @@ function SecurityTab() {
             <button
               type="button"
               onClick={() => setShowCurrent(!showCurrent)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-white text-xs"
             >
               {showCurrent ? 'Hide' : 'Show'}
             </button>
@@ -321,7 +322,7 @@ function SecurityTab() {
             <button
               type="button"
               onClick={() => setShowNew(!showNew)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-white text-xs"
             >
               {showNew ? 'Hide' : 'Show'}
             </button>
@@ -347,7 +348,7 @@ function SecurityTab() {
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span className="spinner-sm" />
               Updating…
             </span>
           ) : (
@@ -376,19 +377,16 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-surface-900 bg-mesh">
       {/* Top nav bar */}
-      <header className="border-b border-surface-700 bg-surface-900/80 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-surface-600 bg-surface-900/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-base shadow-glow-sm">
-              🐝
-            </div>
-            <span className="font-bold text-sm">
+          <Link to="/" className="flex items-center gap-2.5">
+            <img src={logoIcon} alt="Sprint Hive" className="w-8 h-8 object-contain" />
+            <span className="font-bold text-sm text-white">
               Sprint<span className="text-brand-400">Hive</span>
             </span>
           </Link>
 
           <div className="flex items-center gap-3">
-            {/* Placeholder — full app nav in Phase 3 */}
             <Link to="/app" className="btn-ghost btn-sm">Dashboard</Link>
             <button onClick={handleLogout} className="btn-secondary btn-sm">
               Sign Out
@@ -401,7 +399,7 @@ export default function ProfilePage() {
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-1">Account Settings</h1>
-          <p className="text-slate-400 text-sm">Manage your profile and security preferences</p>
+          <p className="text-surface-400 text-sm">Manage your profile and security preferences</p>
         </div>
 
         {/* Tabs */}
@@ -424,7 +422,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Account info footer */}
-        <div className="mt-6 text-center text-xs text-slate-600">
+        <div className="mt-6 text-center text-xs text-surface-500">
           Account created{' '}
           {user?.createdAt
             ? new Date(user.createdAt).toLocaleDateString('en-US', {

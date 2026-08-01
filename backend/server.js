@@ -96,7 +96,7 @@ app.use('/uploads', express.static('uploads'));
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: '🐝 Sprint Hive API is running',
+    message: '⚡ Sprint Hive API is running',
     environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
   });
@@ -202,7 +202,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   await connectDB();
   server.listen(PORT, () => {
-    console.log(`\n🐝 Sprint Hive API Server`);
+    console.log(`\n⚡ Sprint Hive API Server`);
     console.log(`🚀 Running on: http://localhost:${PORT}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
     console.log(`📡 Socket.io: active`);

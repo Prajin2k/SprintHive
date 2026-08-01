@@ -79,7 +79,7 @@ const CalendarPage = () => {
   }, [activeOrg, projects]);
 
   const eventPropGetter = (event) => {
-    let backgroundColor = '#f97316';
+    let backgroundColor = '#5B5FFF';
     if (event.type === 'sprint') backgroundColor = '#3b82f6';
     return { style: { backgroundColor, border: 'none', borderRadius: '4px' } };
   };

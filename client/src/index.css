@@ -4,8 +4,23 @@
 
 /* ── Google Fonts loaded via <head> link ── */
 
-/* ── CSS Custom Properties (design tokens) ──────────────────── */
+/* ── CSS Custom Properties (design tokens) ──────────────────────── */
 :root {
+  /* Sprint Hive brand */
+  --brand-primary: #5B5FFF;
+  --brand-secondary: #7C3AED;
+  --brand-accent: #22D3EE;
+
+  /* Surfaces */
+  --bg: #0F172A;
+  --surface: #1E293B;
+  --card: #1F2937;
+  --border: #334155;
+
+  /* Text */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+
   /* Spacing scale */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -45,8 +60,8 @@ html {
 
 body {
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  background-color: #0f0f13;
-  color: #f1f0f8;
+  background-color: #0F172A;
+  color: #F8FAFC;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -54,133 +69,188 @@ body {
 
 /* ── Scrollbar Styling ───────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #16161d;
+  background: #0F172A;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3a3a52;
-  border-radius: 3px;
+  background: #334155;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4a4a66;
+  background: #475569;
 }
 
 /* ── Selection ───────────────────────────────────────────────── */
 ::selection {
-  background: rgba(249, 115, 22, 0.3);
+  background: rgba(91, 95, 255, 0.3);
   color: #fff;
 }
 
 /* ── Component Layer ─────────────────────────────────────────── */
 @layer components {
-  /* Cards */
+  /* ── Cards ─────────────────────────────────────────────── */
   .card {
-    @apply bg-surface-800 border border-surface-600 rounded-xl p-5 shadow-card;
+    @apply bg-surface-700 border border-surface-600 rounded-2xl p-5 shadow-card;
   }
   .card-hover {
-    @apply card transition-all duration-200 hover:border-surface-400 hover:-translate-y-0.5 hover:shadow-card;
+    @apply card transition-all duration-200 hover:border-surface-500 hover:-translate-y-1 hover:shadow-card-hover cursor-pointer;
+  }
+  .card-glass {
+    background: rgba(30, 41, 59, 0.6);
+    @apply border border-surface-600/50 rounded-2xl p-5 shadow-card backdrop-blur-md;
   }
 
-  /* Buttons */
+  /* ── Buttons ──────────────────────────────────────────── */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg
-           transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2
-           focus:ring-offset-surface-900 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
+           focus:ring-offset-surface-900 disabled:opacity-50 disabled:cursor-not-allowed
+           select-none;
   }
   .btn-primary {
-    @apply btn bg-brand-500 hover:bg-brand-600 text-white focus:ring-brand-400
-           shadow-glow-sm hover:shadow-glow px-4 py-2 text-sm;
+    background: linear-gradient(135deg, #5B5FFF 0%, #7C3AED 100%);
+    @apply btn text-white shadow-glow-sm
+           hover:shadow-glow hover:-translate-y-0.5 hover:brightness-110
+           focus:ring-brand-500 px-5 py-2.5 text-sm active:translate-y-0;
   }
   .btn-secondary {
-    @apply btn bg-surface-700 hover:bg-surface-600 text-white border border-surface-500
-           focus:ring-surface-400 px-4 py-2 text-sm;
+    @apply btn bg-surface-600 hover:bg-surface-500 text-white border border-surface-500
+           hover:border-surface-400 focus:ring-surface-400 px-5 py-2.5 text-sm;
   }
   .btn-ghost {
-    @apply btn bg-transparent hover:bg-surface-700 text-slate-300 hover:text-white
-           focus:ring-surface-500 px-4 py-2 text-sm;
+    @apply btn bg-transparent hover:bg-surface-800 text-slate-300 hover:text-white
+           focus:ring-surface-500 px-5 py-2.5 text-sm border border-transparent hover:border-surface-600;
   }
   .btn-danger {
-    @apply btn bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 px-4 py-2 text-sm;
+    @apply btn bg-red-600 hover:bg-red-500 text-white focus:ring-red-500 px-5 py-2.5 text-sm
+           hover:-translate-y-0.5 shadow-sm;
   }
   .btn-sm {
-    @apply px-3 py-1.5 text-xs;
+    @apply px-3 py-1.5 text-xs rounded-lg;
   }
   .btn-lg {
-    @apply px-6 py-3 text-base;
+    @apply px-7 py-3.5 text-base rounded-xl;
   }
   .btn-icon {
-    @apply btn p-2 aspect-square;
+    @apply btn p-2.5 aspect-square rounded-xl;
   }
 
-  /* Inputs */
+  /* ── Inputs ──────────────────────────────────────────── */
   .input {
-    @apply w-full bg-surface-700 border border-surface-500 rounded-lg px-3 py-2
-           text-sm text-white placeholder-slate-500
-           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500
-           transition-all duration-150;
+    @apply w-full bg-surface-800 border border-surface-600 rounded-xl px-4 py-2.5
+           text-sm text-white placeholder-surface-400
+           focus:outline-none focus:ring-2 focus:ring-brand-500/60 focus:border-brand-500
+           transition-all duration-200 hover:border-surface-500;
   }
   .input-error {
-    @apply border-red-500 focus:ring-red-500;
+    @apply border-red-500 focus:ring-red-500/60 focus:border-red-500;
   }
   .label {
-    @apply block text-xs font-medium text-slate-400 mb-1;
+    @apply block text-xs font-semibold text-surface-300 mb-1.5 tracking-wide uppercase;
   }
   .error-msg {
-    @apply text-xs text-red-400 mt-1;
+    @apply text-xs text-red-400 mt-1.5 flex items-center gap-1;
   }
 
-  /* Badges */
+  /* ── Badges ──────────────────────────────────────────── */
   .badge {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;
   }
-  .badge-orange { @apply badge bg-brand-500/20 text-brand-300; }
-  .badge-green  { @apply badge bg-green-500/20 text-green-400; }
-  .badge-red    { @apply badge bg-red-500/20 text-red-400; }
-  .badge-blue   { @apply badge bg-blue-500/20 text-blue-400; }
-  .badge-gray   { @apply badge bg-surface-600 text-slate-400; }
-  .badge-purple { @apply badge bg-purple-500/20 text-purple-400; }
+  .badge-primary { @apply badge bg-brand-500/20 text-brand-300 border border-brand-500/30; }
+  .badge-orange  { @apply badge bg-orange-500/20 text-orange-300 border border-orange-500/30; }
+  .badge-green   { @apply badge bg-green-500/20 text-green-400 border border-green-500/30; }
+  .badge-red     { @apply badge bg-red-500/20 text-red-400 border border-red-500/30; }
+  .badge-blue    { @apply badge bg-blue-500/20 text-blue-400 border border-blue-500/30; }
+  .badge-gray    { @apply badge bg-surface-600 text-slate-400; }
+  .badge-purple  { @apply badge bg-purple-500/20 text-purple-400 border border-purple-500/30; }
+  .badge-cyan    { @apply badge bg-cyan-500/20 text-cyan-400 border border-cyan-500/30; }
+  .badge-yellow  { @apply badge bg-yellow-500/20 text-yellow-400 border border-yellow-500/30; }
 
-  /* Dividers */
+  /* ── Dividers ─────────────────────────────────────────── */
   .divider {
     @apply border-t border-surface-600;
   }
 
-  /* Sidebar nav item */
+  /* ── Sidebar nav item ─────────────────────────────────── */
   .nav-item {
-    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400
-           hover:text-white hover:bg-surface-700 transition-all duration-150 cursor-pointer;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-surface-300
+           hover:text-white hover:bg-surface-800 transition-all duration-150 cursor-pointer;
   }
   .nav-item-active {
-    @apply nav-item text-white bg-surface-700 border-l-2 border-brand-500;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+           text-white bg-brand-500/15 border border-brand-500/20 cursor-pointer;
   }
 
-  /* Glassmorphism */
+  /* ── Glassmorphism ────────────────────────────────────── */
   .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+    background: rgba(30, 41, 59, 0.5);
+    @apply backdrop-blur-xl border border-white/10;
+  }
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.8);
+    @apply backdrop-blur-xl border border-white/8;
   }
 
-  /* Skeleton loading */
+  /* ── Skeleton loading ─────────────────────────────────── */
   .skeleton {
-    @apply bg-surface-700 animate-pulse rounded;
+    @apply bg-surface-600 animate-pulse rounded-xl;
+  }
+
+  /* ── Page header ──────────────────────────────────────── */
+  .page-header {
+    @apply mb-8;
+  }
+  .page-title {
+    @apply text-2xl font-bold text-white mb-1;
+  }
+  .page-subtitle {
+    @apply text-surface-300 text-sm;
   }
 }
 
 /* ── Utility Layer ───────────────────────────────────────────── */
 @layer utilities {
+  /* Brand gradient text — Indigo → Cyan */
   .text-gradient {
-    background: linear-gradient(135deg, #f97316, #fb923c, #fdba74);
+    background: linear-gradient(135deg, #5B5FFF 0%, #22D3EE 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* Purple-tinted gradient variant */
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #7C3AED 0%, #5B5FFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Background mesh glow */
   .bg-mesh {
     background-image:
-      radial-gradient(at 20% 30%, hsla(24, 100%, 50%, 0.08) 0px, transparent 50%),
-      radial-gradient(at 80% 70%, hsla(260, 70%, 60%, 0.08) 0px, transparent 50%);
+      radial-gradient(at 20% 30%, hsla(238, 100%, 65%, 0.1) 0px, transparent 55%),
+      radial-gradient(at 80% 70%, hsla(260, 70%, 55%, 0.08) 0px, transparent 55%),
+      radial-gradient(at 50% 95%, hsla(186, 80%, 55%, 0.05) 0px, transparent 50%);
   }
+
+  /* Scrollbar hide */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Loading spinner */
+  .spinner {
+    @apply w-8 h-8 border-2 border-surface-600 border-t-brand-500 rounded-full animate-spin;
+  }
+  .spinner-sm {
+    @apply w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin;
+  }
+
+  /* Tab underline active indicator */
+  .tab-active-indicator {
+    @apply absolute bottom-[-1px] left-0 right-0 h-0.5 bg-brand-500 rounded-full;
+  }
 }

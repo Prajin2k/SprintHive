@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
+import { Eye, EyeOff, LogIn, AlertTriangle, RefreshCw } from 'lucide-react';
 
 import AuthLayout from '../../components/auth/AuthLayout';
 import { loginUser } from '../../store/slices/authSlice';
@@ -37,7 +38,7 @@ export default function LoginPage() {
     const result = await dispatch(loginUser(data));
 
     if (loginUser.fulfilled.match(result)) {
-      toast.success('Welcome back! 🐝');
+      toast.success('Welcome back!');
       navigate(from, { replace: true });
     } else {
       const payload = result.payload;
@@ -70,18 +71,23 @@ export default function LoginPage() {
     >
       {/* Email not verified banner */}
       {unverifiedEmail && (
-        <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 animate-slide-down">
-          <p className="text-amber-300 text-sm font-medium mb-1">Email not verified</p>
-          <p className="text-amber-200/70 text-xs mb-3">
-            Please verify <strong>{unverifiedEmail}</strong> before logging in.
-          </p>
-          <button
-            onClick={handleResendVerification}
-            disabled={resending}
-            className="text-xs text-amber-300 underline underline-offset-2 hover:text-amber-200 transition-colors disabled:opacity-50"
-          >
-            {resending ? 'Sending...' : 'Resend verification email →'}
-          </button>
+        <div className="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 animate-slide-down">
+          <div className="flex items-start gap-3">
+            <AlertTriangle size={16} className="text-amber-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-amber-300 text-sm font-semibold mb-1">Email not verified</p>
+              <p className="text-amber-200/70 text-xs mb-3">
+                Please verify <strong>{unverifiedEmail}</strong> before logging in.
+              </p>
+              <button
+                onClick={handleResendVerification}
+                disabled={resending}
+                className="flex items-center gap-1.5 text-xs text-amber-300 underline underline-offset-2 hover:text-amber-200 transition-colors disabled:opacity-50"
+              >
+                {resending ? <><RefreshCw size={11} className="animate-spin" /> Sending...</> : 'Resend verification email →'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -102,11 +108,11 @@ export default function LoginPage() {
 
         {/* Password */}
         <div>
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center justify-between mb-1.5">
             <label htmlFor="login-password" className="label mb-0">Password</label>
             <Link
               to="/forgot-password"
-              className="text-xs text-brand-400 hover:text-brand-300 transition-colors"
+              className="text-xs text-brand-400 hover:text-brand-300 transition-colors font-medium"
             >
               Forgot password?
             </Link>
@@ -117,16 +123,16 @@ export default function LoginPage() {
               type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               placeholder="••••••••"
-              className={`input pr-10 ${errors.password ? 'input-error' : ''}`}
+              className={`input pr-11 ${errors.password ? 'input-error' : ''}`}
               {...register('password')}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors text-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-200 transition-colors"
               aria-label="Toggle password visibility"
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
           {errors.password && <p className="error-msg">{errors.password.message}</p>}
@@ -141,18 +147,20 @@ export default function LoginPage() {
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Signing in...
+              <span className="spinner-sm" />
+              Signing in…
             </span>
           ) : (
-            'Sign In →'
+            <span className="flex items-center gap-2">
+              <LogIn size={17} /> Sign In
+            </span>
           )}
         </button>
       </form>
 
-      <p className="text-center text-sm text-slate-400 mt-6">
+      <p className="text-center text-sm text-surface-300 mt-6">
         Don't have an account?{' '}
-        <Link to="/register" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
+        <Link to="/register" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
           Create one free
         </Link>
       </p>

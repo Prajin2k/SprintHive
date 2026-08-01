@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
+import { Eye, EyeOff, UserPlus, Mail } from 'lucide-react';
 
 import AuthLayout from '../../components/auth/AuthLayout';
 import { registerUser } from '../../store/slices/authSlice';
@@ -41,6 +42,7 @@ const getStrength = (pw) => {
 
 const strengthLabels = ['', 'Very weak', 'Weak', 'Fair', 'Strong', 'Very strong'];
 const strengthColors = ['', 'bg-red-500', 'bg-orange-500', 'bg-amber-400', 'bg-green-500', 'bg-emerald-400'];
+const strengthTextColors = ['', 'text-red-400', 'text-orange-400', 'text-amber-400', 'text-green-400', 'text-emerald-400'];
 
 export default function RegisterPage() {
   const dispatch = useDispatch();
@@ -76,17 +78,19 @@ export default function RegisterPage() {
     return (
       <AuthLayout>
         <div className="text-center animate-fade-in">
-          <div className="text-6xl mb-6">📧</div>
+          <div className="w-20 h-20 rounded-full bg-brand-500/15 border border-brand-500/25 flex items-center justify-center mx-auto mb-6">
+            <Mail size={36} className="text-brand-400" />
+          </div>
           <h1 className="text-2xl font-bold text-white mb-3">Check your inbox!</h1>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">
+          <p className="text-surface-300 text-sm leading-relaxed mb-6">
             We sent a verification link to{' '}
-            <span className="text-white font-medium">{registeredEmail}</span>.
+            <span className="text-white font-semibold">{registeredEmail}</span>.
             <br />
             Click the link to activate your account.
           </p>
-          <div className="glass rounded-xl p-4 text-xs text-slate-500 mb-8">
+          <div className="rounded-2xl border border-surface-600 bg-surface-800/50 p-4 text-xs text-surface-400 mb-8">
             Didn't receive it? Check your spam folder or{' '}
-            <Link to="/login" className="text-brand-400 underline">
+            <Link to="/login" className="text-brand-400 underline hover:text-brand-300 transition-colors">
               try logging in to resend
             </Link>
             .
@@ -142,21 +146,21 @@ export default function RegisterPage() {
               type={showPassword ? 'text' : 'password'}
               autoComplete="new-password"
               placeholder="Min. 8 chars, uppercase, number"
-              className={`input pr-10 ${errors.password ? 'input-error' : ''}`}
+              className={`input pr-11 ${errors.password ? 'input-error' : ''}`}
               {...register('password')}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-200 transition-colors"
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
           {/* Strength meter */}
           {password.length > 0 && (
-            <div className="mt-2">
-              <div className="flex gap-1 mb-1">
+            <div className="mt-2.5">
+              <div className="flex gap-1 mb-1.5">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <div
                     key={i}
@@ -166,7 +170,7 @@ export default function RegisterPage() {
                   />
                 ))}
               </div>
-              <p className={`text-xs ${strength >= 4 ? 'text-green-400' : 'text-slate-500'}`}>
+              <p className={`text-xs font-medium ${strengthTextColors[strength]}`}>
                 {strengthLabels[strength]}
               </p>
             </div>
@@ -198,24 +202,27 @@ export default function RegisterPage() {
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Creating account...
+              <span className="spinner-sm" />
+              Creating account…
             </span>
           ) : (
-            'Create Account →'
+            <span className="flex items-center gap-2">
+              <UserPlus size={17} /> Create Account
+            </span>
           )}
         </button>
 
-        <p className="text-center text-xs text-slate-500 mt-2">
+        <p className="text-center text-xs text-surface-400 mt-2">
           By signing up you agree to our{' '}
-          <a href="#" className="text-slate-400 underline">Terms</a> and{' '}
-          <a href="#" className="text-slate-400 underline">Privacy Policy</a>.
+          <a href="#" className="text-surface-300 underline hover:text-white transition-colors">Terms</a>{' '}
+          and{' '}
+          <a href="#" className="text-surface-300 underline hover:text-white transition-colors">Privacy Policy</a>.
         </p>
       </form>
 
-      <p className="text-center text-sm text-slate-400 mt-6">
+      <p className="text-center text-sm text-surface-300 mt-6">
         Already have an account?{' '}
-        <Link to="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
+        <Link to="/login" className="text-brand-400 hover:text-brand-300 font-semibold transition-colors">
           Sign in
         </Link>
       </p>
