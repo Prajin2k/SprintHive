@@ -48,14 +48,16 @@ const sprintSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchSprints.pending, (state) => { state.isLoading = true; state.error = null; })
-      .addCase(fetchSprints.fulfilled, (state, action) => { state.isLoading = false; state.sprints = action.payload; })
+      .addCase(fetchSprints.fulfilled, (state, action) => { state.isLoading = false; state.sprints = action.payload.data || []; })
       .addCase(fetchSprints.rejected, (state, action) => { state.isLoading = false; state.error = action.payload; })
       
-      .addCase(createSprint.fulfilled, (state, action) => { state.sprints.push(action.payload); })
+      .addCase(createSprint.fulfilled, (state, action) => { if (action.payload?.data) state.sprints.push(action.payload.data); })
       
       .addCase(updateSprint.fulfilled, (state, action) => {
-        const index = state.sprints.findIndex(s => s._id === action.payload._id);
-        if (index !== -1) state.sprints[index] = action.payload;
+        const updated = action.payload?.data;
+        if (!updated) return;
+        const index = state.sprints.findIndex(s => s._id === updated._id);
+        if (index !== -1) state.sprints[index] = updated;
       })
       
       .addCase(deleteSprint.fulfilled, (state, action) => {

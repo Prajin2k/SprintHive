@@ -33,7 +33,7 @@ const useOrg = () => {
   const isManagerOrAbove = ['owner', 'manager'].includes(userOrgRole);
   const isTeamLeadOrAbove = ['owner', 'manager', 'teamlead'].includes(userOrgRole);
   const isDeveloperOrAbove = ['owner', 'manager', 'teamlead', 'developer'].includes(userOrgRole);
-  const canManageMembers = isOwner;         // only owner can remove/change roles
+  const canManageMembers = isManagerOrAbove; // owner + manager can remove members and change roles
   const canInviteMembers = isManagerOrAbove; // owner + manager can invite
 
   return {

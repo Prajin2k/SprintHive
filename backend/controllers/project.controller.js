@@ -138,7 +138,7 @@ const getProjectReport = asyncHandler(async (req, res) => {
     isArchived: false,
   });
 
-  if (req.headers.accept?.includes('application/pdf') || req.query.format === 'pdf' || req.headers['response-type'] === 'blob' || true) {
+  if (req.headers.accept?.includes('application/pdf') || req.query.format === 'pdf' || req.headers['response-type'] === 'blob') {
     const doc = new PDFDocument({ margin: 50 });
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename=Project_${project.name}_Report.pdf`);

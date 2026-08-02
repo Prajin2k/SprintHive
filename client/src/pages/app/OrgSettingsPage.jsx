@@ -44,7 +44,7 @@ function RoleBadge({ role }) {
 }
 
 // ── Member row ──────────────────────────────────────────────────
-function MemberRow({ member, isOwner, currentUserId, orgId, onRemove, onRoleChange }) {
+function MemberRow({ member, canManageMembers, currentUserId, orgId, onRemove, onRoleChange }) {
   const user = member.user;
   const userId = user?._id || user;
   const isCurrentUser = userId === currentUserId;
@@ -79,7 +79,7 @@ function MemberRow({ member, isOwner, currentUserId, orgId, onRemove, onRoleChan
 
       {/* Role */}
       <div className="flex items-center gap-2">
-        {isOwner && !isOrgOwner && !isCurrentUser ? (
+        {canManageMembers && !isOrgOwner && !isCurrentUser ? (
           <select
             value={member.role}
             onChange={handleRoleChange}
@@ -98,7 +98,7 @@ function MemberRow({ member, isOwner, currentUserId, orgId, onRemove, onRoleChan
       </div>
 
       {/* Remove button */}
-      {isOwner && !isOrgOwner && !isCurrentUser && (
+      {canManageMembers && !isOrgOwner && !isCurrentUser && (
         <button
           onClick={() => onRemove(userId)}
           className="text-surface-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-500/10 transition-colors ml-1"
@@ -280,7 +280,7 @@ export default function OrgSettingsPage() {
                 <MemberRow
                   key={m.user?._id || i}
                   member={m}
-                  isOwner={isOwner}
+                  canManageMembers={canManageMembers}
                   currentUserId={currentUserId}
                   orgId={activeOrg._id}
                   onRemove={handleRemove}

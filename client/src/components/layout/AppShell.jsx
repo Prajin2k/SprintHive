@@ -14,6 +14,11 @@ import {
   Menu,
   X,
   ChevronRight,
+  Crown,
+  BriefcaseBusiness,
+  Users,
+  Code2,
+  ShieldCheck,
 } from 'lucide-react';
 
 import useAuth from '../../hooks/useAuth';
@@ -23,6 +28,15 @@ import OrgSwitcher from './OrgSwitcher';
 import NotificationBell from './NotificationBell';
 import GlobalSearch from './GlobalSearch';
 import logoIcon from '../../assets/logo_icon.png';
+
+/* ── Sidebar role badge config ────────────────────────────────────── */
+const SIDEBAR_ROLE = {
+  owner:     { Icon: Crown,            label: 'Owner',     cls: 'text-purple-400' },
+  manager:   { Icon: BriefcaseBusiness, label: 'Manager',   cls: 'text-blue-400'   },
+  teamlead:  { Icon: Users,            label: 'Team Lead',  cls: 'text-indigo-400' },
+  developer: { Icon: Code2,            label: 'Developer',  cls: 'text-emerald-400'},
+  tester:    { Icon: ShieldCheck,      label: 'Tester',     cls: 'text-amber-400'  },
+};
 
 /* ── Nav item definition ──────────────────────────────────────────── */
 const NAV_ITEMS = [
@@ -133,7 +147,21 @@ export default function AppShell() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-white truncate">{user?.name}</p>
-            <p className="text-[10px] text-surface-400 truncate capitalize">{userOrgRole || '—'}</p>
+            {/* Role badge */}
+            {(() => {
+              const roleKey = userOrgRole?.toLowerCase();
+              const roleMeta = roleKey && SIDEBAR_ROLE[roleKey];
+              if (!roleMeta) return (
+                <p className="text-[10px] text-surface-400 truncate capitalize">{userOrgRole || '—'}</p>
+              );
+              const { Icon: RoleIcon, label, cls } = roleMeta;
+              return (
+                <span className={`inline-flex items-center gap-1 text-[10px] font-semibold ${cls} mt-0.5`}>
+                  <RoleIcon size={10} strokeWidth={2.5} />
+                  {label}
+                </span>
+              );
+            })()}
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleLogout(); }}

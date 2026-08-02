@@ -54,10 +54,10 @@ const notificationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchNotifications.pending, (state) => { state.isLoading = true; state.error = null; })
-      .addCase(fetchNotifications.fulfilled, (state, action) => { state.isLoading = false; state.notifications = action.payload; })
+      .addCase(fetchNotifications.fulfilled, (state, action) => { state.isLoading = false; state.notifications = action.payload.data || []; })
       .addCase(fetchNotifications.rejected, (state, action) => { state.isLoading = false; state.error = action.payload; })
       
-      .addCase(fetchUnreadCount.fulfilled, (state, action) => { state.unreadCount = action.payload.count || 0; })
+      .addCase(fetchUnreadCount.fulfilled, (state, action) => { state.unreadCount = action.payload.data?.count || 0; })
       
       .addCase(markRead.fulfilled, (state, action) => {
         const notif = state.notifications.find(n => n._id === action.payload);

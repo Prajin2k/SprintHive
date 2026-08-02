@@ -96,19 +96,19 @@ router.delete(
   orgController.revokeInvite
 );
 
-// Remove a member (owner only)
+// Remove a member (owner or manager)
 router.delete(
   '/:orgId/members/:userId',
   protect,
-  requireOrgRole(['owner']),
+  requireOrgRole(OWNER_MANAGER),
   orgController.removeMember
 );
 
-// Update member role (owner only)
+// Update member role (owner or manager)
 router.patch(
   '/:orgId/members/:userId',
   protect,
-  requireOrgRole(['owner']),
+  requireOrgRole(OWNER_MANAGER),
   updateRoleValidation,
   validate,
   orgController.updateMemberRole

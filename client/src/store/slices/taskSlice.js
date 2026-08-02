@@ -58,18 +58,22 @@ const taskSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.pending, (state) => { state.isLoading = true; state.error = null; })
-      .addCase(fetchTasks.fulfilled, (state, action) => { state.isLoading = false; state.tasks = action.payload; })
+      .addCase(fetchTasks.fulfilled, (state, action) => { state.isLoading = false; state.tasks = action.payload.data || []; })
       .addCase(fetchTasks.rejected, (state, action) => { state.isLoading = false; state.error = action.payload; })
       
-      .addCase(createTask.fulfilled, (state, action) => { state.tasks.push(action.payload); })
+      .addCase(createTask.fulfilled, (state, action) => { if (action.payload?.data) state.tasks.push(action.payload.data); })
       
       .addCase(updateTask.fulfilled, (state, action) => {
-        const index = state.tasks.findIndex(t => t._id === action.payload._id);
-        if (index !== -1) state.tasks[index] = action.payload;
+        const updated = action.payload?.data;
+        if (!updated) return;
+        const index = state.tasks.findIndex(t => t._id === updated._id);
+        if (index !== -1) state.tasks[index] = updated;
       })
       .addCase(setTaskStatus.fulfilled, (state, action) => {
-        const index = state.tasks.findIndex(t => t._id === action.payload._id);
-        if (index !== -1) state.tasks[index] = action.payload;
+        const updated = action.payload?.data;
+        if (!updated) return;
+        const index = state.tasks.findIndex(t => t._id === updated._id);
+        if (index !== -1) state.tasks[index] = updated;
       })
       
       .addCase(deleteTask.fulfilled, (state, action) => {

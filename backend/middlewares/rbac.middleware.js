@@ -182,7 +182,7 @@ const requireTaskRole = (allowedRoles) =>
       return next(new AppError('Task not found.', 404));
     }
 
-    const project = await Project.findById(task.project).select('organization isArchived');
+    const project = await Project.findById(task.project).select('organization members isArchived');
 
     if (!project || project.isArchived) {
       return next(new AppError('Associated project not found or archived.', 404));
@@ -200,6 +200,13 @@ const requireTaskRole = (allowedRoles) =>
           403
         )
       );
+    }
+
+    const isProjectMember = project.members.some(
+      (m) => m.toString() === req.user.id.toString()
+    );
+    if (!isProjectMember && !['owner', 'manager'].includes(role)) {
+      return next(new AppError('You are not a member of this project.', 403));
     }
 
     req.task = task;
