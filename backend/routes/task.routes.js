@@ -6,13 +6,13 @@ const { createTask, getTasks, getTask, updateTask, deleteTask, bulkUpdateStatus 
 
 router.use(protect);
 
-router.post('/', requireProjectRole(['owner', 'manager', 'teamlead']), createTask);
-router.get('/', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), getTasks);
+router.post('/', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), createTask);
+router.get('/', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester'], { mustBeProjectMember: true }), getTasks);
 
-router.patch('/bulk-status', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), bulkUpdateStatus);
+router.patch('/bulk-status', requireProjectRole(['owner', 'manager', 'teamlead', 'developer'], { mustBeProjectMember: true }), bulkUpdateStatus);
 
-router.get('/:taskId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), getTask);
-router.patch('/:taskId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), updateTask);
-router.delete('/:taskId', requireProjectRole(['owner', 'manager', 'teamlead']), deleteTask);
+router.get('/:taskId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester'], { mustBeProjectMember: true }), getTask);
+router.patch('/:taskId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer'], { mustBeProjectMember: true }), updateTask);
+router.delete('/:taskId', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), deleteTask);
 
 module.exports = router;

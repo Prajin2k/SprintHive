@@ -40,7 +40,7 @@ const getProjects = asyncHandler(async (req, res) => {
 
   // req.userOrgRole set by requireOrgRole
   const filter = { organization: orgId, isArchived: false };
-  if (!['owner', 'manager'].includes(req.userOrgRole)) {
+  if (req.userOrgRole === 'developer') {
     filter.members = req.user.id;
   }
 

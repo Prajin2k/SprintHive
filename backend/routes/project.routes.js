@@ -9,23 +9,24 @@ const {
 
 const ALL_ROLES = ['owner', 'manager', 'teamlead', 'developer', 'tester'];
 const OWNER_MANAGER = ['owner', 'manager'];
+const PROJECT_ADMINS = ['owner', 'manager', 'teamlead'];
 
 // All project routes require authentication
 router.use(protect);
 
 // List + create — org membership enforced via query.orgId / body.organizationId
 router.get('/', requireOrgRole(ALL_ROLES), getProjects);
-router.post('/', requireOrgRole(OWNER_MANAGER), createProject);
+router.post('/', requireOrgRole(PROJECT_ADMINS), createProject);
 
 // Single project routes — membership enforced by requireProjectRole
-router.get('/:projectId', requireProjectRole(ALL_ROLES), getProject);
-router.patch('/:projectId', requireProjectRole(OWNER_MANAGER), updateProject);
-router.delete('/:projectId', requireProjectRole(['owner']), deleteProject);
+router.get('/:projectId', requireProjectRole(ALL_ROLES, { mustBeProjectMember: true }), getProject);
+router.patch('/:projectId', requireProjectRole(PROJECT_ADMINS, { mustBeProjectMember: true }), updateProject);
+router.delete('/:projectId', requireProjectRole(['owner'], { mustBeProjectMember: true }), deleteProject);
 
-router.post('/:projectId/members', requireProjectRole(OWNER_MANAGER), addMember);
-router.delete('/:projectId/members/:userId', requireProjectRole(OWNER_MANAGER), removeMember);
+router.post('/:projectId/members', requireProjectRole(OWNER_MANAGER, { mustBeProjectMember: true }), addMember);
+router.delete('/:projectId/members/:userId', requireProjectRole(OWNER_MANAGER, { mustBeProjectMember: true }), removeMember);
 
-router.get('/:projectId/report', requireProjectRole(['owner', 'manager', 'teamlead']), getProjectReport);
+router.get('/:projectId/report', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), getProjectReport);
 
 // Sprint subroutes — mounted with mergeParams so :projectId is accessible
 router.use('/:projectId/sprints', require('./sprint.routes'));

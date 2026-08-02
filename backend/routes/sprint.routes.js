@@ -6,13 +6,11 @@ const { createSprint, getSprints, getSprint, updateSprint, deleteSprint, addTask
 
 router.use(protect);
 
-router.post('/', requireProjectRole(['owner', 'manager']), createSprint);
-router.get('/', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), getSprints);
-router.get('/:sprintId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), getSprint);
-router.patch('/:sprintId', requireProjectRole(['owner', 'manager']), updateSprint);
-router.delete('/:sprintId', requireProjectRole(['owner', 'manager']), deleteSprint);
-
-router.post('/:sprintId/tasks', requireProjectRole(['owner', 'manager', 'teamlead']), addTaskToSprint);
-router.delete('/:sprintId/tasks/:taskId', requireProjectRole(['owner', 'manager', 'teamlead']), removeTaskFromSprint);
-
+router.post('/', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), createSprint);
+router.get('/', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester'], { mustBeProjectMember: true }), getSprints);
+router.get('/:sprintId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester'], { mustBeProjectMember: true }), getSprint);
+router.patch('/:sprintId', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), updateSprint);
+router.delete('/:sprintId', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), deleteSprint);
+router.post('/:sprintId/tasks', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), addTaskToSprint);
+router.delete('/:sprintId/tasks/:taskId', requireProjectRole(['owner', 'manager', 'teamlead'], { mustBeProjectMember: true }), removeTaskFromSprint);
 module.exports = router;

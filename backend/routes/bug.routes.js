@@ -6,10 +6,10 @@ const { reportBug, getBugs, getBug, updateBug, deleteBug } = require('../control
 
 router.use(protect);
 
-router.post('/', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), reportBug);
-router.get('/', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), getBugs);
-router.get('/:bugId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), getBug);
-router.patch('/:bugId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester']), updateBug);
-router.delete('/:bugId', requireProjectRole(['owner', 'manager']), deleteBug);
+router.post('/', requireProjectRole(['owner', 'developer', 'tester'], { mustBeProjectMember: true }), reportBug);
+router.get('/', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester'], { mustBeProjectMember: true }), getBugs);
+router.get('/:bugId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester'], { mustBeProjectMember: true }), getBug);
+router.patch('/:bugId', requireProjectRole(['owner', 'manager', 'teamlead', 'developer', 'tester'], { mustBeProjectMember: true }), updateBug);
+router.delete('/:bugId', requireProjectRole(['owner'], { mustBeProjectMember: true }), deleteBug);
 
 module.exports = router;
