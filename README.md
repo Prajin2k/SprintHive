@@ -1,5 +1,7 @@
 # 🚀 SprintHive
-
+<p align="center">
+  <img src="./assets/github_banner.png" alt="Sprint Hive Banner" width="100%">
+</p>
 A production-grade SaaS Project Management Platform built with the MERN Stack that helps teams collaborate, manage projects, track tasks, and monitor progress in a secure and scalable environment.
 
 ![License](https://img.shields.io/badge/License-MIT-green)
