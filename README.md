@@ -1,37 +1,56 @@
-# 🚀 SprintHive
+
 <p align="center">
   <img src="./assets/github_banner.png" alt="Sprint Hive Banner" width="100%">
 </p>
-A production-grade SaaS Project Management Platform built with the MERN Stack that helps teams collaborate, manage projects, track tasks, and monitor progress in a secure and scalable environment.
+<h1 align="center">Sprint Hive</h1>
 
-![License](https://img.shields.io/badge/License-MIT-green)
-![React](https://img.shields.io/badge/Frontend-React-blue)
-![Node.js](https://img.shields.io/badge/Backend-Node.js-success)
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-green)
-![Express](https://img.shields.io/badge/API-Express-black)
+<p align="center">
+A production-grade SaaS Project Management Platform built with the MERN Stack.
+</p>
+
+<p align="center">
+Secure Authentication • Organization Management • RBAC • Sprint Planning • Analytics
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-green" />
+  <img src="https://img.shields.io/badge/Frontend-React-blue" />
+  <img src="https://img.shields.io/badge/Backend-Node.js-success" />
+  <img src="https://img.shields.io/badge/Database-MongoDB-green" />
+  <img src="https://img.shields.io/badge/API-Express-black" />
+</p>
 
 ---
 
-## 📖 Overview
+##  Overview
 
-SprintHive is a full-stack project management platform designed to simplify team collaboration and project execution. It provides secure authentication, organization management, task tracking, dashboards, and real-time collaboration through a modern and scalable architecture.
+Sprint Hive is a production-grade SaaS project management platform built with the MERN stack. It enables teams to collaborate through organization workspaces, manage projects and sprints, assign tasks, track bugs, and monitor progress using a modern and scalable architecture.
 
-This project demonstrates production-level backend architecture, RESTful API development, authentication, authorization, and full-stack application development using the MERN stack.
+The project demonstrates full-stack application development, secure authentication, role-based authorization, RESTful API design, and scalable frontend architecture.
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🔐 Secure User Authentication (JWT)
-- 👥 Organization & Workspace Management
-- 📋 Project Management
-- ✅ Task Assignment & Tracking
-- 📊 Dashboard & Analytics
-- 👤 User Profile Management
-- 🔒 Role-Based Access Control
-- 📅 Task Status Management
-- ⚡ RESTful API Architecture
-- 🌐 Responsive User Interface
+- JWT Authentication with Refresh Tokens
+- Email Verification & Password Reset
+- Organization & Workspace Management
+- Project, Sprint & Task Management
+- Bug Tracking Workflow
+- Role-Based Access Control (RBAC)
+- Analytics Dashboard
+- Responsive SaaS-inspired UI
+
+---
+##  Architecture
+
+Client (React + Redux Toolkit)
+        │
+        ▼
+REST API (Express.js)
+        │
+        ▼
+MongoDB Database
 
 ---
 
@@ -40,8 +59,8 @@ This project demonstrates production-level backend architecture, RESTful API dev
 ### Frontend
 
 - React.js
-- JavaScript
-- CSS
+- Redux Toolkit
+- Tailwind CSS
 - Axios
 
 ### Backend
@@ -49,7 +68,7 @@ This project demonstrates production-level backend architecture, RESTful API dev
 - Node.js
 - Express.js
 - JWT Authentication
-- REST API
+- Nodemailer
 
 ### Database
 
@@ -58,37 +77,56 @@ This project demonstrates production-level backend architecture, RESTful API dev
 
 ---
 
+## 📡 Backend Highlights
+
+- RESTful API Design
+- JWT Authentication
+- Role-Based Access Control (RBAC)
+- Organization-based Authorization
+- Modular MVC Architecture
+- Protected Routes
+- MongoDB Aggregation
+
+---
+
 ## 📂 Project Structure
 
 ```
 SprintHive
 │
-├── client/
-│   ├── src/
-│   ├── public/
-│   └── package.json
+backend
 │
-├── backend/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── config/
-│   └── server.js
+├── config
+├── controllers
+├── middleware
+├── models
+├── routes
+├── services
+├── utils
+└── server.js
+
+client
+│
+├── components
+├── hooks
+├── pages
+├── services
+├── store
+├── assets
+└── App.jsx
 │
 └── README.md
 ```
 
 ---
 
-## 🚀 Installation
+##  Installation
 
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/SprintHive.git
+git clone https://github.com/Prajin2k/SprintHive.git
 ```
-
 ### Install Dependencies
 
 Frontend
@@ -128,59 +166,57 @@ npm start
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
-Add screenshots here.
+| Landing Page | Dashboard |
+|--------------|-----------|
+| ![](screenshots/landing.png) | ![](screenshots/dashboard.png) |
 
-Example:
+| Projects | Analytics |
+|----------|-----------|
+| ![](screenshots/projects.png) | ![](screenshots/analytics.png) |
 
-- Login Page
-- Dashboard
-- Project Page
-- Task Management
-- Analytics
-
----
-
-## 🎯 Learning Outcomes
+##  Learning Outcomes
 
 This project helped strengthen my understanding of:
 
-- MERN Stack Development
-- REST API Design
-- JWT Authentication
-- MongoDB Data Modeling
-- Backend Architecture
-- Protected Routes
-- State Management
-- Project Structuring
-- Full Stack Development
+Building Sprint Hive strengthened my understanding of full-stack application architecture, authentication and authorization, REST API design, MongoDB schema modeling, Redux Toolkit state management, and scalable software development practices.
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
-- Real-Time Notifications
+- Advanced Role-Based Access Control
+- Real-time Notifications
 - Team Chat
 - Calendar Integration
 - File Attachments
 - Activity Timeline
-- Email Notifications
-- Kanban Board
-- Dark Mode
+- CI/CD Pipeline
+- Docker Support
+- Live Deployment
 
 ---
 
-## 👨‍💻 Author
+##  Why Sprint Hive?
+
+Sprint Hive was built to explore how modern SaaS applications are designed. Instead of creating a basic CRUD application, the goal was to implement features commonly found in real-world project management platforms, including authentication, organization workspaces, RBAC, sprint management, analytics, and scalable backend architecture.
+
+---
+
+##  Author
 
 **Prajin M**
 
-Computer Science Engineering Student
+Computer Science Engineering Student | MERN Stack Developer
 
 GitHub: https://github.com/Prajin2k
+LinkedIn: https://www.linkedin.com/in/prajin-m
 
 ---
-
 ## ⭐ Support
 
-If you found this project helpful, consider giving it a ⭐ on GitHub.
+If you found this project useful, consider giving it a star on GitHub. Feedback, suggestions, and contributions are always welcome.
+---
+##  Live Demo
+Deployment is planned. The live demo will be added after production deployment.
