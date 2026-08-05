@@ -35,7 +35,7 @@ function OrgAvatar({ org, size = 'sm' }) {
 export default function OrgSwitcher() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { myOrgs, activeOrg, userOrgRole } = useOrg();
+  const { myOrgs, activeOrg, userOrgRole, isLoading, hasOrgs } = useOrg();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -55,14 +55,41 @@ export default function OrgSwitcher() {
     setIsOpen(false);
   };
 
+  // If orgs are still loading, show a neutral disabled control to avoid accidental navigation
   if (!activeOrg) {
+    if (isLoading) {
+      return (
+        <button
+          disabled
+          className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg bg-surface-800 text-sm text-surface-400 opacity-70 cursor-wait"
+        >
+          <span className="loader w-4 h-4 mr-2" />
+          <span>Restoring workspace…</span>
+        </button>
+      );
+    }
+
+    // When loading finished and user has no orgs, show create button
+    if (!hasOrgs) {
+      return (
+        <button
+          onClick={() => navigate('/app/onboarding')}
+          className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-surface-700 transition-colors text-sm text-brand-400"
+        >
+          <span className="text-base">＋</span>
+          <span>Create Organization</span>
+        </button>
+      );
+    }
+
+    // Edge case: hasOrgs true but activeOrg not yet restored — show neutral placeholder
     return (
       <button
-        onClick={() => navigate('/app/onboarding')}
-        className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-surface-700 transition-colors text-sm text-brand-400"
+        disabled
+        className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg bg-surface-800 text-sm text-surface-400 opacity-70 cursor-wait"
       >
-        <span className="text-base">＋</span>
-        <span>Create Organization</span>
+        <span className="loader w-4 h-4 mr-2" />
+        <span>Loading organizations…</span>
       </button>
     );
   }

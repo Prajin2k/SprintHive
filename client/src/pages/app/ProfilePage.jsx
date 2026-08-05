@@ -16,6 +16,7 @@ import {
   changePassword,
   logoutUser,
 } from '../../store/slices/authSlice';
+import { clearOrgState } from '../../store/slices/orgSlice';
 
 // ── Validation schemas ──────────────────────────────────────────
 const profileSchema = z.object({
@@ -656,6 +657,7 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
+    dispatch(clearOrgState());
     navigate('/login');
   };
 

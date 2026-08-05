@@ -13,7 +13,7 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useAuth();
-  const { activeOrg, isLoading } = useOrg();
+  const { activeOrg, isLoading, hasOrgs } = useOrg();
   const projects = useSelector((state) => state.project?.projects || []);
 
   const [stats, setStats] = useState({
@@ -29,9 +29,15 @@ const DashboardPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Wait for organizations to finish loading and for an active organization to be available
     if (isLoading) return;
+
     if (!activeOrg) {
-      navigate('/app/onboarding');
+      // If loading finished and the user has no orgs, send them to onboarding
+      if (hasOrgs === false) {
+        navigate('/app/onboarding');
+      }
+      // Otherwise, either orgs are being restored elsewhere or an unexpected state occurred — do nothing and wait
       return;
     }
 
@@ -84,7 +90,7 @@ const DashboardPage = () => {
     };
 
     fetchData();
-  }, [activeOrg, isLoading, dispatch, navigate]);
+  }, [activeOrg, isLoading, hasOrgs, dispatch, navigate]);
 
   useEffect(() => {
     if (!activeOrg || !projects.length || !user) return;

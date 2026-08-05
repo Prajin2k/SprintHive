@@ -49,17 +49,13 @@ function AppWithOrgs() {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth();
   const accessToken = useSelector((state) => state.auth.accessToken);
-  const { activeOrg } = useOrg();
+  const { activeOrg, isLoading } = useOrg();
 
- useEffect(() => {
-  console.log("isAuthenticated:", isAuthenticated);
-  console.log("accessToken:", accessToken);
-
-  if (isAuthenticated && accessToken) {
-    console.log("Calling fetchMyOrgs...");
-    dispatch(fetchMyOrgs());
-  }
-}, [isAuthenticated, accessToken, dispatch]);
+  useEffect(() => {
+    if (isAuthenticated && accessToken) {
+      dispatch(fetchMyOrgs());
+    }
+  }, [isAuthenticated, accessToken, dispatch]);
 
   useEffect(() => {
     if (isAuthenticated && user && accessToken) {
@@ -74,6 +70,18 @@ function AppWithOrgs() {
       return () => socket.disconnect();
     }
   }, [isAuthenticated, user, accessToken, activeOrg?._id]);
+
+  // While orgs are being restored, show a neutral loading screen inside the protected app shell
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="text-center">
+          <div className="spinner mb-3" />
+          <p className="text-surface-400">Restoring workspace…</p>
+        </div>
+      </div>
+    );
+  }
 
   return <AppShell />;
 }

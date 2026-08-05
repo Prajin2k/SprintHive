@@ -1,5 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/useAuth';
+import { initAuth } from '../store/slices/authSlice';
+import { fetchMyOrgs } from '../store/slices/orgSlice';
 import logoIcon from '../assets/logo_icon.png';
 import heroImg from '../assets/herodashboard.png';
 import {
@@ -135,6 +138,46 @@ function Navbar() {
   const { isAuthenticated, isInitialized } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [gotoLoading, setGotoLoading] = useState(false);
+
+  const handleGoToWorkspace = async () => {
+    // Prevent double clicks
+    if (gotoLoading) return;
+    setGotoLoading(true);
+    try {
+      // Ensure auth is initialized / attempt session restore if needed
+      if (!isInitialized || !isAuthenticated) {
+        try {
+          await dispatch(initAuth()).unwrap();
+        } catch (err) {
+          // No active session, redirect to login
+          setGotoLoading(false);
+          navigate('/login');
+          return;
+        }
+      }
+
+      // At this point the user is authenticated — fetch organizations and wait
+      try {
+        const orgsRes = await dispatch(fetchMyOrgs()).unwrap();
+        const orgs = orgsRes?.orgs || [];
+        if (!orgs.length) {
+          navigate('/app/onboarding');
+        } else {
+          navigate('/app');
+        }
+      } catch (err) {
+        // If orgs load fails, fall back to app; the app shell will surface errors
+        console.error('Failed to load organizations on Go to Workspace:', err);
+        navigate('/app');
+      }
+    } finally {
+      setGotoLoading(false);
+    }
+  };
+
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.08]"
@@ -163,9 +206,14 @@ function Navbar() {
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
           {isInitialized && isAuthenticated ? (
-            <Link to="/app" className="btn-primary btn-sm">
-              Go to Workspace <ArrowRight size={14} />
-            </Link>
+            <button
+              type="button"
+              onClick={handleGoToWorkspace}
+              disabled={gotoLoading}
+              className={`btn-primary btn-sm ${gotoLoading ? 'opacity-70 pointer-events-none' : ''}`}
+            >
+              {gotoLoading ? 'Loading…' : 'Go to Workspace'} {gotoLoading ? null : <ArrowRight size={14} />}
+            </button>
           ) : (
             <>
               <Link to="/login" className="btn-ghost btn-sm">Log in</Link>
@@ -197,7 +245,9 @@ function Navbar() {
           <a href="#roles" className="block text-sm text-surface-300 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>Roles</a>
           <div className="pt-4 border-t border-surface-700 flex flex-col gap-3">
             {isInitialized && isAuthenticated ? (
-              <Link to="/app" className="btn-primary w-full justify-center">Go to Workspace</Link>
+              <button onClick={handleGoToWorkspace} disabled={gotoLoading} className={`btn-primary w-full justify-center ${gotoLoading ? 'opacity-70 pointer-events-none' : ''}`}>
+                {gotoLoading ? 'Loading…' : 'Go to Workspace'}
+              </button>
             ) : (
               <>
                 <Link to="/login" className="btn-ghost w-full justify-center">Log in</Link>

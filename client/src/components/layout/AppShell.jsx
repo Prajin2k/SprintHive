@@ -24,6 +24,7 @@ import {
 import useAuth from '../../hooks/useAuth';
 import useOrg from '../../hooks/useOrg';
 import { logoutUser } from '../../store/slices/authSlice';
+import { clearOrgState } from '../../store/slices/orgSlice';
 import OrgSwitcher from './OrgSwitcher';
 import NotificationBell from './NotificationBell';
 import GlobalSearch from './GlobalSearch';
@@ -81,6 +82,7 @@ export default function AppShell() {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
+    dispatch(clearOrgState());
     navigate('/login');
   };
 

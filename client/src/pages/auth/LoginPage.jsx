@@ -9,6 +9,7 @@ import { Eye, EyeOff, LogIn, AlertTriangle, RefreshCw } from 'lucide-react';
 
 import AuthLayout from '../../components/auth/AuthLayout';
 import { loginUser } from '../../store/slices/authSlice';
+import { fetchMyOrgs } from '../../store/slices/orgSlice';
 import authService from '../../services/authService';
 import useAuth from '../../hooks/useAuth';
 
@@ -39,7 +40,15 @@ export default function LoginPage() {
 
     if (loginUser.fulfilled.match(result)) {
       toast.success('Welcome back!');
-      navigate(from, { replace: true });
+
+      try {
+        const orgsResult = await dispatch(fetchMyOrgs()).unwrap();
+        const orgs = orgsResult?.orgs || [];
+        navigate(orgs.length ? '/app' : '/app/onboarding', { replace: true });
+      } catch (err) {
+        console.error('Failed to load organizations after login:', err);
+        navigate(from, { replace: true });
+      }
     } else {
       const payload = result.payload;
       if (payload?.errorCode === 'EMAIL_NOT_VERIFIED') {
